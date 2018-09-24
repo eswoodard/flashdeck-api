@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: EYJ3tEwX+DwbsYkS7nLlTazpTV+Dv+yoDSnHaYzU9e7fY/ltbJniqhS2Ljg0/z6ZpRRRJP6hKOQYja+QVtzoR6XEcG+dUy/5z+t0EQno1y9Md+v2UCxiIUXdXaCvkd+l5NUxB/Guv3zj2lnCXSdfUNEolSPFH2OObxUHT+3uMVVjlOrL2Eso3Rks98dkcFYazZZDy6QA1smP3VpV6PGFHFjDd2CF1ym4SHzoRl1WlBAFFuZWXM/kKLME+t9cJfpCcrYNYzLkUOj6sxI641ya3jw2T/9XSAOdz4tBFmD/+YnnV5ZPAC9vnYusOA5w1NpZgTJrhzJVHsJFLVK2AWsM4htBncuKbnQRsPWvUyd9XuDXYnxgMekdt+d6Qd0LiTFLZE3VbXjZJII8tZ0F2Sz6IIlrUegxewoC1PV14rYsi1n/6f9wVskyIYlnwtLP1ncsQZPfB7YXNoYqZKMH0ciWpdQQB/BZr8rocZwhKpGYxRqqqQiKuY++MnmpJqGCGET7lCwS8e0bFCn9E+W+Ne5evdrtGOkegMHpHoNKIO6xUOgNgn/8qB+hug35oKdFxI3EH6uWeAgk8ZaREPmRzU22o7KlFw8c6unotjykGc+P9tZL8eos25MdvwIOwOo/G1fmkQIJkI7xXUiMyiPif0PRVvr7SqSijho1TP44UZjwIbM=
+  app: damp-meadow-54405
+  on:
+    repo: eswoodard/flashdeck-api

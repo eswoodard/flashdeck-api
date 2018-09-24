@@ -1,5 +1,5 @@
 const chai = require('chai');
-const chaiHttp = require('chai-http')
+const chaiHttp = require('chai-http');
 
 const {app} = require('../server');
 
@@ -8,12 +8,12 @@ chai.use(chaiHttp);
 
 describe('API', function() {
 
-  it('should return 200 on GET requests', function() {
+  it('should 200 on GET requests', function() {
     return chai.request(app)
-    .get('api/fooo')
-    .then(function(res) {
-      res.should.have.status(200);
-      res.should.be.json;
-    });
+      .get('/api/fooooo')
+      .then(function(res) {
+        res.should.have.status(200);
+        res.should.be.json;
+      });
   });
 });
