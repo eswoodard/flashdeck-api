@@ -3,13 +3,13 @@ const chaiHttp = require('chai-http');
 
 const {app, runServer, closeServer} = require('../server');
 
-const should = chai.should();
+const expect = chai.expect;
 chai.use(chaiHttp);
 
-describe('API', function() {
+describe('Integration tests for API', function() {
 
   before(function() {
-    return runServer();
+    return runServer(true);
   });
 
   after(function() {
@@ -17,11 +17,12 @@ describe('API', function() {
   });
 
   it('should 200 on GET requests', function() {
-    return chai.request(app)
-      .get('/api/fooooo')
-      .then(function(res) {
-        res.should.have.status(200);
-        res.should.be.json;
+    chai.request(app)
+      .get('/')
+      .then(res => {
+        expect(res).to.have.status(200);
+        expect(res).to.be.html;
+        expect(res.text).to.have.string('<!DOCTYPE html>');
       });
   });
 });
