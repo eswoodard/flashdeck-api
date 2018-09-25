@@ -8,6 +8,7 @@ const passport = require('passport');
 
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const { router: deckRouter } = require('./decks');
 
 mongoose.Promise = global.Promise;
 
@@ -26,14 +27,15 @@ passport.use(jwtStrategy);
 
 app.use('/flashdeck', usersRouter);
 app.use('/flashdeck', authRouter);
+app.use('/flashdeck', deckRouter);
 
-const jwtAuth = passport.authenticate('jwt', {session: false});
+// const jwtAuth = passport.authenticate('jwt', {session: false});
 
-app.get('/flashdeck/protected', jwtAuth, (req, res) => {
-  res.json({
-    data: 'rosebud'
-  });
-});
+// app.get('/flashdeck/protected', jwtAuth, (req, res) => {
+//   res.json({
+//     data: 'rosebud'
+//   });
+// });
 
 let server;
 
