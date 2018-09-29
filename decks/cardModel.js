@@ -2,9 +2,6 @@ const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
 
-  deck: {
-    type: mongoose.Schema.Types.ObjectId, ref: 'Deck'
-  },
   cardTerm: {
     type: String,
     required: true,
@@ -12,8 +9,11 @@ const cardSchema = new mongoose.Schema({
   cardDefinition: {
     type: String,
     required: true
+  },
+  isStarred: {
+    type: Boolean
   }
-}),
+});
 
 const card = mongoose.model('Card', cardSchema);
 
