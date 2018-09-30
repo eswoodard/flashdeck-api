@@ -15,6 +15,7 @@ const deckSchema = new mongoose.Schema({
   }]
 })
 
+
 const deck = mongoose.model('Deck', deckSchema);
 
 module.exports = deck;

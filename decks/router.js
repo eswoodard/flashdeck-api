@@ -4,17 +4,35 @@ const mongoose = require('mongoose');
 const Deck = require('./deckModel');
 const Card = require('./cardModel');
 
+
 const router = express.Router();
 
 const jwtAuth = passport.authenticate('jwt', {session: false});
 
 router.get('/dashboard', jwtAuth, (req, res) => {
-  Deck.find({})
+  Deck
+    .find()
+    .populate('deckAuthor', 'username')
     .then((deck) => {
       res.status(200).json({ deck });
+      // console.log('***', {deck});
     })
     .catch(err => handleError(res.err));
 });
+
+
+router.get('/deck/:id', jwtAuth, (req, res) => {
+  console.log('!!!');
+  Deck
+    .findById(req.params.id)
+    .populate('deckCards')
+    .then((deck) => {
+      res.status(200).json({ deck });
+      console.log('***', {deck})
+    })
+    .catch(err => res.status(500).json(err));
+});
+
 
 router.post('/create-deck', jwtAuth, (req, res) => {
   cardIds = [];
@@ -27,10 +45,10 @@ router.post('/create-deck', jwtAuth, (req, res) => {
   // replace with 3 when isStarred added
   console.log(cardCount);
   let completed = 0;
-  console.log(req.body);
+  // console.log(req.body);
   Object.keys(req.body).forEach(function(key) {
     if(key.indexOf('term')===0){
-      console.log('inside if statement');
+      // console.log('inside if statement');
       var id =key.replace('term', '');
       var term = req.body[key];
       var definition = req.body['definition'+id];
