@@ -14,8 +14,7 @@ router.get('/dashboard', jwtAuth, (req, res) => {
     .find()
     .populate('deckAuthor', 'username')
     .then((deck) => {
-      res.status(200).json({ deck });
-      // console.log('***', {deck});
+      res.status(200).json(deck);
     })
     .catch(err => handleError(res.err));
 });
@@ -36,19 +35,13 @@ router.get('/deck/:id', jwtAuth, (req, res) => {
 
 router.post('/create-deck', jwtAuth, (req, res) => {
   cardIds = [];
-  // console.log('!!!', cardIds);
-  // console.log('***', req.body);
-  // console.log('$$$', req.user.id);
-
 
   let cardCount = (Object.keys(req.body).length - 1)/2;
   // replace with 3 when isStarred added
   console.log(cardCount);
   let completed = 0;
-  // console.log(req.body);
   Object.keys(req.body).forEach(function(key) {
     if(key.indexOf('term')===0){
-      // console.log('inside if statement');
       var id =key.replace('term', '');
       var term = req.body[key];
       var definition = req.body['definition'+id];
@@ -57,10 +50,8 @@ router.post('/create-deck', jwtAuth, (req, res) => {
         cardDefinition: definition,
       })
       .then((card) => {
-        // console.log('###', card);
         cardIds.push(card._id);
         checkComplete();
-        // console.log('%%%', cardIds);
       })
       .catch((err) => {
         console.log(err);
@@ -77,15 +68,24 @@ router.post('/create-deck', jwtAuth, (req, res) => {
         deckCards: cardIds
       })
       .then((deck) => {
-        // console.log("&&&", cardIds);
-        res.status(201).json({ deck });
+        const deckjson = deck.toJSON();
+        deckjson.deckAuthor = {username: req.user.username}
+        console.log(deck);
+        res.status(201).json({ deck: deckjson });
       })
       .catch((err) => {
         res.status(500).json(err);
       });
     }
   }
+});
 
+router.delete('/deck/:id', jwtAuth, (req, res) => {
+  Deck.findByIdAndRemove(req.params.id)
+  .then(() => {
+    console.log(`Deleted Deck with id \`${req.params.id}\``);
+    res.status(204).json({Message: 'Deck successful deleted'});
+  });
 });
 
 
