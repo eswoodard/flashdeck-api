@@ -9,9 +9,6 @@ const cardSchema = new mongoose.Schema({
   cardDefinition: {
     type: String,
     required: true
-  },
-  isStarred: {
-    type: Boolean
   }
 });
 
