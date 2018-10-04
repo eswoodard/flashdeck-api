@@ -10,9 +10,9 @@ const deckSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  deckCards: [{
+  deckCards: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Card'
-  }]
+  }
 })
 
 
