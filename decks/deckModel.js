@@ -3,17 +3,18 @@ const mongoose = require('mongoose');
 
 const deckSchema = new mongoose.Schema({
 
-  deckCreator: {
+  deckAuthor: {
     type: mongoose.Schema.Types.ObjectId, ref: 'User'
   },
   deckTitle: {
     type: String,
     required: true,
   },
-  deckCard: [{
+  deckCards: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'Card'
   }]
 })
+
 
 const deck = mongoose.model('Deck', deckSchema);
 

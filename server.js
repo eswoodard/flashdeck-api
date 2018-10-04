@@ -25,9 +25,8 @@ app.use(morgan('common'));
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/flashdeck', usersRouter);
-app.use('/flashdeck', authRouter);
-app.use('/flashdeck', deckRouter);
+app.use('/flashdeck', usersRouter, authRouter, deckRouter);
+
 
 // const jwtAuth = passport.authenticate('jwt', {session: false});
 
