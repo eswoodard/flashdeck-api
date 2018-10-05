@@ -59,7 +59,7 @@ router.post('/create-deck', jwtAuth, (req, res) => {
 
 });
 
-router.delete('delete/deck/:id', jwtAuth, (req, res) => {
+router.delete('deck/:id', jwtAuth, (req, res) => {
   Deck.findByIdAndRemove(req.params.id)
   .then(() => {
     console.log(`Deleted Deck with id \`${req.params.id}\``);
@@ -70,28 +70,31 @@ router.delete('delete/deck/:id', jwtAuth, (req, res) => {
   });
 });
 
-router.delete('/deck/:id/index', jwtAuth, (req, res) => {
-  console.log("$$$", req.params)
-  Deck.findOne({deckCards: mongoose.Types.ObjectId(req.params.id)})
-  .then((deck) => {
-    console.log('***', deck);
-    deck.deckCards = deck.deckCards.cards.filter((card) => {
-      return card != req.params.id;
+router.put('/deck/:id', jwtAuth, (req, res) => {
+  console.log('zzz',req.body)
+  deckCards = req.body.deckCards.map((card) => (
+    {
+      cardTerm: card.cardTerm,
+      cardDefinition: card.cardDefinition
+    }
+  ))
+    Deck.findByIdAndUpdate(req.params.id, { $set:
+      {
+      // deckAuthor: mongoose.Types.ObjectId(req.user.id),
+      deckTitle: req.body.deckTitle,
+      deckCards
+    }
+    }, {new: true})
+    .then((deck) => {
+      const deckjson = deck.toJSON();
+      // deckjson.deckAuthor = {username: req.user.username}
+      console.log('&&&', deck);
+      res.status(201).json({ deck: deckjson });
     })
-    return deck.save();
-  })
-  .catch((err) => {
-    res.status(500).json(err);
-  });
-  Card.findByIdAndRemove(req.params.id)
-    .then(() => {
-      console.log(`Deleted Card with id \`${req.params.id}\``);
-      res.status(204).json({Message: 'Card successfully deleted'});
-     })
-     .catch((err) => {
-       res.status(500).json(err);
-     })
-  })
+    .catch((err) => {
+      res.status(500).json(err);
+    })
+});
 
 
 
