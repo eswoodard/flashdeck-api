@@ -10,9 +10,19 @@ const deckSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  deckCards: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'Card'
-  }]
+  deckCards: [
+    {
+      cardTerm: {
+          type: String,
+          required: true,
+        },
+        cardDefinition: {
+          type: String,
+          required: true
+        }
+      }
+    ]
+
 })
 
 
