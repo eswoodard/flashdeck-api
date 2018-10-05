@@ -1,22 +1,22 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-const cardSchema = new mongoose.Schema({
+// const cardSchema = new mongoose.Schema({
 
-cards: [
-  {
-    cardTerm: {
-      type: String,
-      required: true,
-    },
-    cardDefinition: {
-      type: String,
-      required: true
-    }
-  }
-]
+// cards: [
+//   {
+//     cardTerm: {
+//       type: String,
+//       required: true,
+//     },
+//     cardDefinition: {
+//       type: String,
+//       required: true
+//     }
+//   }
+// ]
 
-});
+// });
 
-const card = mongoose.model('Card', cardSchema);
+// const card = mongoose.model('Card', cardSchema);
 
-module.exports = card;
+// module.exports = card;

@@ -13,7 +13,7 @@ router.get('/dashboard', jwtAuth, (req, res) => {
   Deck
     .find()
     .populate('deckAuthor', 'username')
-    .populate('deckCards')
+    // .populate('deckCards')
     .then((deck) => {
       res.status(200).json(deck);
     })
@@ -24,7 +24,7 @@ router.get('/dashboard', jwtAuth, (req, res) => {
 router.get('/deck/:id', jwtAuth, (req, res) => {
   Deck
     .findById(req.params.id)
-    .populate('deckCards')
+    // .populate('deckCards')
     .then((deck) => {
       res.status(200).json({ deck });
       console.log('***', {deck})
@@ -35,61 +35,28 @@ router.get('/deck/:id', jwtAuth, (req, res) => {
 
 router.post('/create-deck', jwtAuth, (req, res) => {
   console.log('***',req.body)
-  cardIds = []
-  const cards = req.body.cards.map((card) => (
-    {cardTerm: card.cardTerm,
-    cardDefinition: card.cardDefinition}
+
+  const deckCards = req.body.cards.map((card) => (
+    {
+      cardTerm: card.cardTerm,
+      cardDefinition: card.cardDefinition
+    }
   ))
-  console.log('###',cards);
+    Deck.create({
+      deckAuthor: mongoose.Types.ObjectId(req.user.id),
+      deckTitle: req.body.deckTitle,
+      deckCards
+    })
+    .then((deck) => {
+      const deckjson = deck.toJSON();
+      deckjson.deckAuthor = {username: req.user.username}
+      console.log('&&&', deck);
+      res.status(201).json({ deck: deckjson });
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+  })
 
-
-  // let cardCount = (Object.keys(req.body).length - 1)/2;
-  // replace with 3 when isStarred added
-  // console.log('!!!', cardCount);
-  // let completed = 0;
-  // console.log('***', req.body);
-  // Object.keys(req.body).forEach(function(key) {
-    // if(key.indexOf('term')===0){
-    //   var id =key.replace('term', '');
-    //   var term = req.body[key];
-    //   var definition = req.body['definition'+id];
-      Card.create({
-        cards,
-        // cardTerm: req.body.cards.cardTerm,
-        // cardDefinition: req.body.cards.cardDefinition,
-      })
-      .then((card) => {
-        console.log("!!!", card);
-        cardIds.push(card._id);
-        // checkComplete();
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json
-      })
-    // }
-  // });
-  // function checkComplete() {
-  //   completed++;
-    // if(completed === cardCount) {
-      .then(() => {
-        Deck.create({
-          deckAuthor: mongoose.Types.ObjectId(req.user.id),
-          deckTitle: req.body.deckTitle,
-          deckCards: cardIds
-        })
-        .then((deck) => {
-          const deckjson = deck.toJSON();
-          deckjson.deckAuthor = {username: req.user.username}
-          console.log('&&&', deck);
-          res.status(201).json({ deck: deckjson });
-        })
-        .catch((err) => {
-          res.status(500).json(err);
-      })
-      });
-    // }
-  // }
 });
 
 router.delete('delete/deck/:id', jwtAuth, (req, res) => {
@@ -103,7 +70,8 @@ router.delete('delete/deck/:id', jwtAuth, (req, res) => {
   });
 });
 
-router.delete('/card/:id', jwtAuth, (req, res) => {
+router.delete('/deck/:id/index', jwtAuth, (req, res) => {
+  console.log("$$$", req.params)
   Deck.findOne({deckCards: mongoose.Types.ObjectId(req.params.id)})
   .then((deck) => {
     console.log('***', deck);
