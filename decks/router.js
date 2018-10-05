@@ -59,15 +59,25 @@ router.post('/create-deck', jwtAuth, (req, res) => {
 
 });
 
-router.delete('deck/:id', jwtAuth, (req, res) => {
+router.delete('/deck/:id', jwtAuth, (req, res) => {
+  console.log(req.params);
   Deck.findByIdAndRemove(req.params.id)
+  // .then(() => {
+  //   console.log(`Deleted Deck with id \`${req.params.id}\``);
+  //   res.status(204).json({Message: 'Deck successfully deleted'});
+  // })
+  // .catch((err) => {
+  //   res.status(500).json(err);
+  // })
   .then(() => {
-    console.log(`Deleted Deck with id \`${req.params.id}\``);
-    res.status(204).json({Message: 'Deck successfully deleted'});
+    Deck
+    .find()
+    .populate('deckAuthor', 'username')
+    .then((deck) => {
+      res.status(200).json(deck);
+    })
+    .catch(err => handleError(res.err));
   })
-  .catch((err) => {
-    res.status(500).json(err);
-  });
 });
 
 router.put('/deck/:id', jwtAuth, (req, res) => {
@@ -80,14 +90,12 @@ router.put('/deck/:id', jwtAuth, (req, res) => {
   ))
     Deck.findByIdAndUpdate(req.params.id, { $set:
       {
-      // deckAuthor: mongoose.Types.ObjectId(req.user.id),
       deckTitle: req.body.deckTitle,
       deckCards
     }
     }, {new: true})
     .then((deck) => {
       const deckjson = deck.toJSON();
-      // deckjson.deckAuthor = {username: req.user.username}
       console.log('&&&', deck);
       res.status(201).json({ deck: deckjson });
     })
