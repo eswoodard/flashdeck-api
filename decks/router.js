@@ -36,7 +36,7 @@ router.get('/deck/:id', jwtAuth, (req, res) => {
 router.post('/create-deck', jwtAuth, (req, res) => {
   console.log('***',req.body)
 
-  const deckCards = req.body.cards.map((card) => (
+  const deckCards = req.body.deckCards.map((card) => (
     {
       cardTerm: card.cardTerm,
       cardDefinition: card.cardDefinition
