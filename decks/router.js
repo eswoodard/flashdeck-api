@@ -62,13 +62,6 @@ router.post('/create-deck', jwtAuth, (req, res) => {
 router.delete('/deck/:id', jwtAuth, (req, res) => {
   console.log(req.params);
   Deck.findByIdAndRemove(req.params.id)
-  // .then(() => {
-  //   console.log(`Deleted Deck with id \`${req.params.id}\``);
-  //   res.status(204).json({Message: 'Deck successfully deleted'});
-  // })
-  // .catch((err) => {
-  //   res.status(500).json(err);
-  // })
   .then(() => {
     Deck
     .find()
@@ -94,13 +87,14 @@ router.put('/deck/:id', jwtAuth, (req, res) => {
       deckCards
     }
     }, {new: true})
-    .then((deck) => {
-      const deckjson = deck.toJSON();
-      console.log('&&&', deck);
-      res.status(201).json({ deck: deckjson });
-    })
-    .catch((err) => {
-      res.status(500).json(err);
+    .then(() => {
+      Deck
+      .find()
+      .populate('deckAuthor', 'username')
+      .then((deck) => {
+        res.status(200).json(deck);
+      })
+      .catch(err => handleError(res.err));
     })
 });
 
