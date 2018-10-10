@@ -25,7 +25,7 @@ app.use(morgan('common'));
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/flashdeck', usersRouter, authRouter, deckRouter);
+app.use('/', usersRouter, authRouter, deckRouter);
 
 
 let server;
