@@ -2,8 +2,6 @@ const express = require('express');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const Deck = require('./deckModel');
-const Card = require('./cardModel');
-
 
 const router = express.Router();
 
@@ -13,25 +11,21 @@ router.get('/dashboard', jwtAuth, (req, res) => {
   Deck
     .find()
     .populate('deckAuthor', 'username')
-    // .populate('deckCards')
     .then((deck) => {
       res.status(200).json(deck);
     })
     .catch(err => handleError(res.err));
 });
 
-
 router.get('/deck/:id', jwtAuth, (req, res) => {
   Deck
     .findById(req.params.id)
-    // .populate('deckCards')
     .then((deck) => {
       res.status(200).json({ deck });
       console.log('***', {deck})
     })
     .catch(err => res.status(500).json(err));
 });
-
 
 router.post('/create-deck', jwtAuth, (req, res) => {
   console.log('***',req.body)
@@ -97,9 +91,5 @@ router.put('/deck/:id', jwtAuth, (req, res) => {
       .catch(err => handleError(res.err));
     })
 });
-
-
-
-
 
 module.exports = {router};

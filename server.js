@@ -28,14 +28,6 @@ passport.use(jwtStrategy);
 app.use('/flashdeck', usersRouter, authRouter, deckRouter);
 
 
-// const jwtAuth = passport.authenticate('jwt', {session: false});
-
-// app.get('/flashdeck/protected', jwtAuth, (req, res) => {
-//   res.json({
-//     data: 'rosebud'
-//   });
-// });
-
 let server;
 
 function runServer(databaseUrl, port = PORT) {
