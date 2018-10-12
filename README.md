@@ -17,7 +17,7 @@ Password: password10
 Node.js, Express.js, Mongodb, Mongoose, JWT, Passport, Mocha, Chai, REST APIs
 
 
-Frontend code can be found [here](https://github.com/eswoodard/flashdeck-client).  Frontend technologies include:  React + Redux, Javascript, CSS, HMTL/JSX
+Frontend code can be found [here](https://github.com/eswoodard/flashdeck-client).  Frontend technologies include:  React + Redux, Javascript, CSS, HTML/JSX
 
 ## Future Enhancements
 
